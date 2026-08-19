@@ -1,15 +1,16 @@
-'use client'
+'use client'  // ← PASTIKAN INI ADA DI BARIS PERTAMA!
 
 import Layout from '@/components/Layout'
 import { useSession } from 'next-auth/react'
 import { useGithub } from '@/hooks/useGithub'
 import { FileUpload } from '@/components/FileUpload'
 import { FaCheckCircle } from 'react-icons/fa'
+import { useState } from 'react'  // ← PASTIKAN useState DI-IMPORT!
 
 export default function Upload() {
   const { data: session } = useSession()
   const { loading, uploadFiles, error } = useGithub()
-  const [success, setSuccess] = useState(false)
+  const [success, setSuccess] = useState(false)  // ← useState harus ada
 
   const handleUpload = async (files, path) => {
     setSuccess(false)
