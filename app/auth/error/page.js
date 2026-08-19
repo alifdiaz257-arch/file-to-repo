@@ -5,7 +5,6 @@ import { useSearchParams } from 'next/navigation'
 import Link from 'next/link'
 import { FaExclamationTriangle, FaArrowLeft } from 'react-icons/fa'
 
-// Komponen yang menggunakan useSearchParams
 function ErrorContent() {
   const searchParams = useSearchParams()
   const error = searchParams.get('error')
@@ -28,34 +27,24 @@ function ErrorContent() {
   const message = error ? errorMessages[error] || errorMessages.Default : 'Unknown error occurred.'
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-github-bg p-4">
-      <div className="bg-github-card border border-github-border rounded-lg p-8 max-w-md w-full fade-in">
+    <div className="min-h-screen flex items-center justify-center bg-[#0d1117] p-4">
+      <div className="bg-[#161b22] border border-[#30363d] rounded-lg p-8 max-w-md w-full">
         <div className="text-center">
           <div className="w-20 h-20 mx-auto mb-4 rounded-full bg-red-500/10 flex items-center justify-center">
             <FaExclamationTriangle className="w-10 h-10 text-red-500" />
           </div>
-          
           <h1 className="text-2xl font-bold text-white mb-2">Authentication Error</h1>
-          <p className="text-github-secondary mb-6">{message}</p>
-
+          <p className="text-[#8b949e] mb-6">{message}</p>
           {error && (
-            <div className="mb-6 p-3 bg-github-bg border border-github-border rounded text-xs text-github-secondary font-mono overflow-x-auto">
+            <div className="mb-6 p-3 bg-[#0d1117] border border-[#30363d] rounded text-xs text-[#8b949e] font-mono overflow-x-auto">
               Error: {error}
             </div>
           )}
-
           <div className="space-y-3">
-            <Link
-              href="/auth/signin"
-              className="block w-full px-4 py-2.5 bg-github-button hover:bg-github-buttonHover text-white rounded-lg transition text-center font-medium"
-            >
+            <Link href="/auth/signin" className="block w-full px-4 py-2.5 bg-[#238636] hover:bg-[#2ea043] text-white rounded-lg transition text-center font-medium">
               Try Again
             </Link>
-            
-            <Link
-              href="/"
-              className="block w-full px-4 py-2.5 bg-github-border hover:bg-github-hover text-white rounded-lg transition text-center flex items-center justify-center gap-2"
-            >
+            <Link href="/" className="block w-full px-4 py-2.5 bg-[#21262d] hover:bg-[#30363d] text-white rounded-lg transition text-center flex items-center justify-center gap-2">
               <FaArrowLeft className="w-4 h-4" />
               Back to Home
             </Link>
@@ -66,12 +55,11 @@ function ErrorContent() {
   )
 }
 
-// Main component dengan Suspense
 export default function AuthError() {
   return (
     <Suspense fallback={
-      <div className="min-h-screen flex items-center justify-center bg-github-bg">
-        <div className="text-github-secondary">Loading...</div>
+      <div className="min-h-screen flex items-center justify-center bg-[#0d1117]">
+        <div className="text-[#8b949e]">Loading...</div>
       </div>
     }>
       <ErrorContent />
