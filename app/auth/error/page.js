@@ -4,10 +4,16 @@ import { Suspense } from 'react'
 import { useSearchParams } from 'next/navigation'
 import Link from 'next/link'
 import { FaExclamationTriangle, FaArrowLeft } from 'react-icons/fa'
+import { useEffect, useState } from 'react'
 
 function ErrorContent() {
+  const [mounted, setMounted] = useState(false)
   const searchParams = useSearchParams()
-  const error = searchParams.get('error')
+  const error = searchParams?.get('error')
+
+  useEffect(() => {
+    setMounted(true)
+  }, [])
 
   const errorMessages = {
     'OAuthSignin': 'Error starting OAuth sign in. Please try again.',
@@ -25,6 +31,14 @@ function ErrorContent() {
   }
 
   const message = error ? errorMessages[error] || errorMessages.Default : 'Unknown error occurred.'
+
+  if (!mounted) {
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-[#0d1117]">
+        <div className="text-[#8b949e]">Loading...</div>
+      </div>
+    )
+  }
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-[#0d1117] p-4">
