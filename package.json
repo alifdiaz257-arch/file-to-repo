@@ -1,22 +1,8 @@
 {
-  "name": "github-manager",
-  "version": "1.0.0",
-  "private": true,
-  "scripts": {
-    "dev": "next dev",
-    "build": "next build",
-    "start": "next start",
-    "lint": "next lint"
-  },
   "dependencies": {
     "next": "14.2.5",
     "react": "^18.3.1",
-    "react-dom": "^18.3.1",
-    "next-auth": "^4.24.7",
-    "react-icons": "^5.2.1",
-    "@octokit/rest": "^20.1.1",
-    "@octokit/auth-oauth-app": "^7.1.0",
-    "formidable": "^3.5.1"
+    "react-dom": "^18.3.1"
   },
   "devDependencies": {
     "tailwindcss": "^3.4.6",
