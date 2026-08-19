@@ -11,7 +11,6 @@
   --accent: #238636;
   --accent-hover: #2ea043;
   --danger: #da3633;
-  --link: #58a6ff;
 }
 
 * {
@@ -29,7 +28,6 @@ html, body {
   -moz-osx-font-smoothing: grayscale;
 }
 
-/* Scrollbar - Minimalis */
 ::-webkit-scrollbar {
   width: 6px;
   height: 6px;
@@ -48,25 +46,15 @@ html, body {
   background: #484f58;
 }
 
-/* Selection */
 ::selection {
   background: rgba(35, 134, 54, 0.2);
   color: white;
 }
 
-/* Focus - No Outline */
 :focus-visible {
   outline: none;
 }
 
-/* Smooth transition */
-* {
-  transition-property: background-color, border-color, color, fill, stroke, opacity, box-shadow, transform;
-  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
-  transition-duration: 150ms;
-}
-
-/* Pulse Animation */
 @keyframes pulse {
   0%, 100% {
     opacity: 1;
@@ -78,15 +66,4 @@ html, body {
 
 .animate-pulse {
   animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
-}
-
-/* Hover effect for cards */
-.hover-card:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 20px 40px -12px rgba(0, 0, 0, 0.8);
-}
-
-/* Text glow for important elements */
-.text-glow {
-  text-shadow: 0 0 40px rgba(35, 134, 54, 0.1);
 }
