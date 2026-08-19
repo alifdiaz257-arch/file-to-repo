@@ -2,32 +2,24 @@
 @tailwind components;
 @tailwind utilities;
 
-:root {
-  --bg-primary: #0d1117;
-  --bg-secondary: #161b22;
-  --border-color: #30363d;
-  --text-primary: #f0f6fc;
-  --text-secondary: #8b949e;
-  --accent: #238636;
-  --accent-hover: #2ea043;
-  --danger: #da3633;
-}
-
+/* Base styles */
 * {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
 }
 
-html, body {
+html,
+body {
   height: 100%;
-  background: var(--bg-primary);
-  color: var(--text-primary);
+  background-color: #0d1117;
+  color: #c9d1d9;
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
 
+/* Scrollbar */
 ::-webkit-scrollbar {
   width: 6px;
   height: 6px;
@@ -38,7 +30,7 @@ html, body {
 }
 
 ::-webkit-scrollbar-thumb {
-  background: var(--border-color);
+  background: #30363d;
   border-radius: 3px;
 }
 
@@ -46,15 +38,18 @@ html, body {
   background: #484f58;
 }
 
+/* Selection */
 ::selection {
   background: rgba(35, 134, 54, 0.2);
   color: white;
 }
 
+/* Focus */
 :focus-visible {
   outline: none;
 }
 
+/* Animations */
 @keyframes pulse {
   0%, 100% {
     opacity: 1;
@@ -66,4 +61,11 @@ html, body {
 
 .animate-pulse {
   animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}
+
+/* Transition */
+* {
+  transition-property: background-color, border-color, color, fill, stroke, opacity, box-shadow, transform;
+  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+  transition-duration: 150ms;
 }
