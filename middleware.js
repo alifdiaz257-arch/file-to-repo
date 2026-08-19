@@ -1,18 +1,24 @@
 import { NextResponse } from 'next/server'
 
 export function middleware(request) {
-  // Redirect semua halaman ke root
   const url = request.nextUrl.clone()
-  url.pathname = '/'
-  return NextResponse.redirect(url)
+  
+  // Redirect semua halaman ke root
+  if (url.pathname !== '/') {
+    url.pathname = '/'
+    return NextResponse.redirect(url)
+  }
+  
+  return NextResponse.next()
 }
 
 export const config = {
   matcher: [
-    '/browse/:path*', 
+    '/browse/:path*',
     '/upload/:path*', 
-    '/editor/:path*', 
+    '/editor/:path*',
     '/tracking/:path*',
+    '/auth/:path*',
     '/api/:path*'
   ]
 }
