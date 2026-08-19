@@ -1,25 +1,25 @@
-'use client'
+'use client'  // ← WAJIB ADA!
 
 import Layout from '@/components/Layout'
 import { useSession } from 'next-auth/react'
-import { useState, useEffect } from 'react'
+import { useState, useEffect } from 'react'  // ← PASTI IMPORT!
 import { FaSave, FaCopy, FaTrash, FaFile, FaCheckCircle } from 'react-icons/fa'
 
 export default function Editor() {
   const { data: session } = useSession()
-  const [files, setFiles] = useState([])
-  const [selectedFile, setSelectedFile] = useState(null)
-  const [content, setContent] = useState('')
-  const [loading, setLoading] = useState(false)
-  const [saving, setSaving] = useState(false)
-  const [saveSuccess, setSaveSuccess] = useState(false)
-  const [currentPath, setCurrentPath] = useState('')
+  const [files, setFiles] = useState([])  // ← useState
+  const [selectedFile, setSelectedFile] = useState(null)  // ← useState
+  const [content, setContent] = useState('')  // ← useState
+  const [loading, setLoading] = useState(false)  // ← useState
+  const [saving, setSaving] = useState(false)  // ← useState
+  const [saveSuccess, setSaveSuccess] = useState(false)  // ← useState
+  const [currentPath, setCurrentPath] = useState('')  // ← useState
 
-  useEffect(() => {
+  useEffect(() => {  // ← useEffect
     if (session) {
       loadFiles('')
     }
-  }, [session])
+  }, [session])  // ← useEffect dependency
 
   const loadFiles = async (path) => {
     setLoading(true)
