@@ -3,17 +3,14 @@
 import Layout from '@/components/Layout'
 import { useSession } from 'next-auth/react'
 import { useState, useEffect } from 'react'
-import { useGithub } from '@/hooks/useGithub'
-import { FileList } from '@/components/FileList'
 import { FaSave, FaCopy, FaTrash, FaFile, FaCheckCircle } from 'react-icons/fa'
-import LoadingSpinner from '@/components/LoadingSpinner'
 
 export default function Editor() {
   const { data: session } = useSession()
-  const { loading, fetchFiles, saveFile, deleteFile } = useGithub()
   const [files, setFiles] = useState([])
   const [selectedFile, setSelectedFile] = useState(null)
   const [content, setContent] = useState('')
+  const [loading, setLoading] = useState(false)
   const [saving, setSaving] = useState(false)
   const [saveSuccess, setSaveSuccess] = useState(false)
   const [currentPath, setCurrentPath] = useState('')
@@ -25,9 +22,17 @@ export default function Editor() {
   }, [session])
 
   const loadFiles = async (path) => {
-    const data = await fetchFiles(path)
-    setFiles(data)
-    setCurrentPath(path)
+    setLoading(true)
+    try {
+      const res = await fetch(`/api/github/files?path=${encodeURIComponent(path)}`)
+      const data = await res.json()
+      setFiles(data)
+      setCurrentPath(path)
+    } catch (error) {
+      console.error('Error loading files:', error)
+    } finally {
+      setLoading(false)
+    }
   }
 
   const handleFileSelect = async (file) => {
@@ -50,7 +55,16 @@ export default function Editor() {
     if (!selectedFile) return
     setSaving(true)
     try {
-      await saveFile(selectedFile.path, content, `Update ${selectedFile.name}`)
+      const res = await fetch('/api/github/save-file', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          path: selectedFile.path,
+          content: content,
+          message: `Update ${selectedFile.name}`
+        })
+      })
+      if (!res.ok) throw new Error('Save failed')
       setSaveSuccess(true)
       setTimeout(() => setSaveSuccess(false), 3000)
     } catch (error) {
@@ -65,7 +79,12 @@ export default function Editor() {
     if (!confirm(`Are you sure you want to delete ${selectedFile.name}?`)) return
     
     try {
-      await deleteFile(selectedFile.path)
+      const res = await fetch('/api/github/delete-file', {
+        method: 'DELETE',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ path: selectedFile.path })
+      })
+      if (!res.ok) throw new Error('Delete failed')
       setSelectedFile(null)
       setContent('')
       loadFiles(currentPath)
@@ -84,7 +103,7 @@ export default function Editor() {
       <Layout>
         <div className="text-center py-20">
           <h2 className="text-2xl font-bold text-white">Please Sign In</h2>
-          <p className="text-github-secondary">You need to sign in to edit files</p>
+          <p className="text-[#8b949e]">You need to sign in to edit files</p>
         </div>
       </Layout>
     )
@@ -93,41 +112,47 @@ export default function Editor() {
   return (
     <Layout>
       <div className="grid grid-cols-1 lg:grid-cols-4 gap-6" style={{ height: 'calc(100vh - 200px)' }}>
-        {/* File Browser */}
-        <div className="lg:col-span-1 bg-github-card border border-github-border rounded-lg p-4 overflow-y-auto">
-          <h3 className="text-sm font-medium text-github-secondary mb-3">Files</h3>
+        <div className="lg:col-span-1 bg-[#161b22] border border-[#30363d] rounded-lg p-4 overflow-y-auto">
+          <h3 className="text-sm font-medium text-[#8b949e] mb-3">Files</h3>
           {loading ? (
-            <LoadingSpinner />
+            <div className="text-center text-[#8b949e] py-4">Loading...</div>
           ) : (
-            <FileList
-              files={files}
-              loading={false}
-              onFileClick={handleFileSelect}
-            />
+            <div className="space-y-1">
+              {files.map((file) => (
+                <div
+                  key={file.sha}
+                  onClick={() => handleFileSelect(file)}
+                  className={`flex items-center gap-3 p-3 rounded-lg transition cursor-pointer ${
+                    selectedFile?.path === file.path
+                      ? 'bg-[#238636] text-white'
+                      : 'hover:bg-[#1f2937] text-[#8b949e] hover:text-white'
+                  }`}
+                >
+                  {file.type === 'dir' ? '📁' : '📄'}
+                  <span className="flex-1 text-sm">{file.name}</span>
+                </div>
+              ))}
+            </div>
           )}
         </div>
 
-        {/* Editor */}
-        <div className="lg:col-span-3 bg-github-card border border-github-border rounded-lg flex flex-col">
+        <div className="lg:col-span-3 bg-[#161b22] border border-[#30363d] rounded-lg flex flex-col">
           {selectedFile ? (
             <>
-              {/* Toolbar */}
-              <div className="p-4 border-b border-github-border flex flex-wrap items-center justify-between gap-2">
+              <div className="p-4 border-b border-[#30363d] flex flex-wrap items-center justify-between gap-2">
                 <div className="flex items-center gap-3 min-w-0">
-                  <FaFile className="text-github-secondary flex-shrink-0" />
+                  <FaFile className="text-[#8b949e] flex-shrink-0" />
                   <span className="font-medium text-white truncate">{selectedFile.name}</span>
-                  <span className="text-xs text-github-secondary truncate hidden sm:inline">
-                    {selectedFile.path}
-                  </span>
+                  <span className="text-xs text-[#8b949e] truncate hidden sm:inline">{selectedFile.path}</span>
                 </div>
                 <div className="flex items-center gap-2 flex-wrap">
                   <button
                     onClick={handleSave}
                     disabled={saving}
-                    className="flex items-center gap-2 px-3 py-1.5 bg-github-button hover:bg-github-buttonHover text-white rounded transition disabled:opacity-50"
+                    className="flex items-center gap-2 px-3 py-1.5 bg-[#238636] hover:bg-[#2ea043] text-white rounded transition disabled:opacity-50"
                   >
                     {saving ? (
-                      <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full spin"></div>
+                      <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
                     ) : (
                       <FaSave className="w-4 h-4" />
                     )}
@@ -135,7 +160,7 @@ export default function Editor() {
                   </button>
                   <button
                     onClick={handleCopy}
-                    className="flex items-center gap-2 px-3 py-1.5 bg-github-border hover:bg-github-hover text-white rounded transition"
+                    className="flex items-center gap-2 px-3 py-1.5 bg-[#21262d] hover:bg-[#30363d] text-white rounded transition"
                   >
                     <FaCopy className="w-4 h-4" />
                     <span className="hidden sm:inline">Copy</span>
@@ -148,26 +173,24 @@ export default function Editor() {
                     <span className="hidden sm:inline">Delete</span>
                   </button>
                   {saveSuccess && (
-                    <span className="flex items-center gap-1 text-github-success text-sm">
+                    <span className="flex items-center gap-1 text-[#3fb950] text-sm">
                       <FaCheckCircle />
                       Saved!
                     </span>
                   )}
                 </div>
               </div>
-
-              {/* Editor Area */}
               <textarea
                 value={content}
                 onChange={(e) => setContent(e.target.value)}
-                className="flex-1 p-4 bg-github-bg text-github-text font-mono text-sm resize-none focus:outline-none"
+                className="flex-1 p-4 bg-[#0d1117] text-[#c9d1d9] font-mono text-sm resize-none focus:outline-none"
                 spellCheck={false}
                 placeholder="Edit file content..."
                 style={{ minHeight: '300px' }}
               />
             </>
           ) : (
-            <div className="flex-1 flex items-center justify-center text-github-secondary">
+            <div className="flex-1 flex items-center justify-center text-[#8b949e]">
               <div className="text-center p-8">
                 <FaFile className="w-16 h-16 mx-auto mb-4 opacity-30" />
                 <p className="text-lg font-medium text-white">Select a file to edit</p>
