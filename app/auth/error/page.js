@@ -1,10 +1,12 @@
 'use client'
 
+import { Suspense } from 'react'
 import { useSearchParams } from 'next/navigation'
 import Link from 'next/link'
 import { FaExclamationTriangle, FaArrowLeft } from 'react-icons/fa'
 
-export default function AuthError() {
+// Komponen yang menggunakan useSearchParams
+function ErrorContent() {
   const searchParams = useSearchParams()
   const error = searchParams.get('error')
 
@@ -61,5 +63,18 @@ export default function AuthError() {
         </div>
       </div>
     </div>
+  )
+}
+
+// Main component dengan Suspense
+export default function AuthError() {
+  return (
+    <Suspense fallback={
+      <div className="min-h-screen flex items-center justify-center bg-github-bg">
+        <div className="text-github-secondary">Loading...</div>
+      </div>
+    }>
+      <ErrorContent />
+    </Suspense>
   )
 }
