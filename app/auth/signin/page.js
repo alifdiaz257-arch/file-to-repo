@@ -1,11 +1,13 @@
 'use client'
 
+import { Suspense } from 'react'
 import { signIn } from 'next-auth/react'
 import { useState } from 'react'
 import { FaGithub } from 'react-icons/fa'
 import { useSearchParams } from 'next/navigation'
 
-export default function SignIn() {
+// Komponen yang menggunakan useSearchParams
+function SignInContent() {
   const [loading, setLoading] = useState(false)
   const searchParams = useSearchParams()
   const error = searchParams.get('error')
@@ -59,5 +61,18 @@ export default function SignIn() {
         </div>
       </div>
     </div>
+  )
+}
+
+// Main component dengan Suspense
+export default function SignIn() {
+  return (
+    <Suspense fallback={
+      <div className="min-h-screen flex items-center justify-center bg-github-bg">
+        <div className="text-github-secondary">Loading...</div>
+      </div>
+    }>
+      <SignInContent />
+    </Suspense>
   )
 }
