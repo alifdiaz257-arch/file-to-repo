@@ -3,52 +3,42 @@
 @tailwind utilities;
 
 :root {
-  --github-bg: #0d1117;
-  --github-card: #161b22;
-  --github-border: #30363d;
-  --github-text: #c9d1d9;
-  --github-secondary: #8b949e;
-  --github-hover: #1f2937;
-  --github-button: #238636;
-  --github-button-hover: #2ea043;
-  --github-danger: #da3633;
-  --github-success: #3fb950;
-  --github-warning: #d29922;
-  
-  --foreground-rgb: 201, 209, 217;
-  --background-start-rgb: 13, 17, 23;
-  --background-end-rgb: 13, 17, 23;
+  --bg-primary: #0d1117;
+  --bg-secondary: #161b22;
+  --border-color: #30363d;
+  --text-primary: #f0f6fc;
+  --text-secondary: #8b949e;
+  --accent: #238636;
+  --accent-hover: #2ea043;
+  --danger: #da3633;
+  --link: #58a6ff;
 }
 
-/* ========== RESET & BASE ========== */
 * {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
 }
 
-html,
-body {
+html, body {
   height: 100%;
-  color: rgb(var(--foreground-rgb));
-  background: rgb(var(--background-start-rgb));
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+  background: var(--bg-primary);
+  color: var(--text-primary);
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
 
-/* ========== SCROLLBAR ========== */
 ::-webkit-scrollbar {
   width: 8px;
-  height: 8px;
 }
 
 ::-webkit-scrollbar-track {
-  background: var(--github-bg);
+  background: var(--bg-primary);
 }
 
 ::-webkit-scrollbar-thumb {
-  background: var(--github-border);
+  background: var(--border-color);
   border-radius: 4px;
 }
 
@@ -56,33 +46,24 @@ body {
   background: #484f58;
 }
 
-/* Firefox */
-* {
-  scrollbar-width: thin;
-  scrollbar-color: var(--github-border) var(--github-bg);
+::selection {
+  background: rgba(35, 134, 54, 0.3);
+  color: white;
 }
 
-/* ========== ANIMATIONS ========== */
-@keyframes fadeIn {
-  from {
-    opacity: 0;
-    transform: translateY(10px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
+:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
 }
 
-@keyframes slideIn {
-  from {
-    opacity: 0;
-    transform: translateX(-20px);
-  }
-  to {
-    opacity: 1;
-    transform: translateX(0);
-  }
+.transition {
+  transition-property: all;
+  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+  transition-duration: 150ms;
+}
+
+.animate-pulse {
+  animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
 }
 
 @keyframes pulse {
@@ -91,582 +72,5 @@ body {
   }
   50% {
     opacity: 0.5;
-  }
-}
-
-@keyframes spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
-}
-
-@keyframes shimmer {
-  0% {
-    background-position: -200% 0;
-  }
-  100% {
-    background-position: 200% 0;
-  }
-}
-
-/* ========== UTILITY CLASSES ========== */
-.fade-in {
-  animation: fadeIn 0.3s ease-out;
-}
-
-.slide-in {
-  animation: slideIn 0.3s ease-out;
-}
-
-.pulse {
-  animation: pulse 2s ease-in-out infinite;
-}
-
-.animate-spin {
-  animation: spin 1s linear infinite;
-}
-
-.shimmer {
-  background: linear-gradient(90deg, 
-    var(--github-card) 25%, 
-    var(--github-hover) 50%, 
-    var(--github-card) 75%
-  );
-  background-size: 200% 100%;
-  animation: shimmer 2s infinite;
-}
-
-/* ========== GITHUB STYLE CARDS ========== */
-.github-card {
-  background-color: var(--github-card);
-  border: 1px solid var(--github-border);
-  border-radius: 8px;
-  transition: all 0.2s ease;
-}
-
-.github-card:hover {
-  border-color: #484f58;
-}
-
-/* ========== GITHUB INPUT ========== */
-.github-input {
-  background-color: var(--github-bg);
-  border: 1px solid var(--github-border);
-  border-radius: 6px;
-  color: var(--github-text);
-  padding: 0.5rem 0.75rem;
-  transition: all 0.2s ease;
-  width: 100%;
-}
-
-.github-input:focus {
-  outline: none;
-  border-color: var(--github-button);
-  box-shadow: 0 0 0 3px rgba(35, 134, 54, 0.3);
-}
-
-.github-input::placeholder {
-  color: var(--github-secondary);
-}
-
-/* ========== GITHUB BUTTONS ========== */
-.github-button {
-  background-color: var(--github-button);
-  color: white;
-  border: none;
-  border-radius: 6px;
-  padding: 0.5rem 1rem;
-  font-weight: 500;
-  transition: all 0.2s ease;
-  cursor: pointer;
-}
-
-.github-button:hover {
-  background-color: var(--github-button-hover);
-  transform: translateY(-1px);
-}
-
-.github-button:active {
-  transform: translateY(0px);
-}
-
-.github-button:disabled {
-  opacity: 0.5;
-  cursor: not-allowed;
-  transform: none;
-}
-
-.github-button-danger {
-  background-color: var(--github-danger);
-}
-
-.github-button-danger:hover {
-  background-color: #f85149;
-}
-
-/* ========== BADGES ========== */
-.github-badge {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.25rem;
-  padding: 0.25rem 0.5rem;
-  border-radius: 12px;
-  font-size: 0.75rem;
-  font-weight: 500;
-}
-
-.github-badge-success {
-  background-color: rgba(63, 185, 80, 0.15);
-  color: var(--github-success);
-}
-
-.github-badge-warning {
-  background-color: rgba(210, 153, 34, 0.15);
-  color: var(--github-warning);
-}
-
-.github-badge-danger {
-  background-color: rgba(218, 54, 51, 0.15);
-  color: var(--github-danger);
-}
-
-/* ========== TYPOGRAPHY ========== */
-h1, h2, h3, h4, h5, h6 {
-  color: var(--github-text);
-  font-weight: 600;
-}
-
-h1 {
-  font-size: 2rem;
-  line-height: 1.3;
-}
-
-h2 {
-  font-size: 1.5rem;
-  line-height: 1.4;
-}
-
-h3 {
-  font-size: 1.25rem;
-  line-height: 1.5;
-}
-
-a {
-  color: #58a6ff;
-  text-decoration: none;
-}
-
-a:hover {
-  text-decoration: underline;
-}
-
-/* ========== LOADING SKELETON ========== */
-.loading-skeleton {
-  background: linear-gradient(
-    90deg,
-    var(--github-card) 25%,
-    var(--github-hover) 50%,
-    var(--github-card) 75%
-  );
-  background-size: 200% 100%;
-  animation: shimmer 1.5s infinite;
-  border-radius: 4px;
-}
-
-/* ========== TOAST NOTIFICATION ========== */
-.toast {
-  position: fixed;
-  bottom: 2rem;
-  right: 2rem;
-  padding: 1rem 1.5rem;
-  border-radius: 8px;
-  background-color: var(--github-card);
-  border: 1px solid var(--github-border);
-  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
-  z-index: 9999;
-  animation: fadeIn 0.3s ease-out;
-  max-width: 400px;
-}
-
-.toast-success {
-  border-left: 4px solid var(--github-success);
-}
-
-.toast-error {
-  border-left: 4px solid var(--github-danger);
-}
-
-.toast-warning {
-  border-left: 4px solid var(--github-warning);
-}
-
-/* ========== SIDEBAR MOBILE FIX ========== */
-@media (max-width: 768px) {
-  .sidebar-enter {
-    animation: none !important;
-  }
-  .sidebar-exit {
-    animation: none !important;
-  }
-  
-  h1 {
-    font-size: 1.5rem;
-  }
-  
-  h2 {
-    font-size: 1.25rem;
-  }
-  
-  .toast {
-    bottom: 1rem;
-    right: 1rem;
-    left: 1rem;
-    max-width: none;
-  }
-}
-
-/* ========== SELECTION ========== */
-::selection {
-  background: rgba(35, 134, 54, 0.3);
-  color: white;
-}
-
-/* ========== FOCUS VISIBLE ========== */
-:focus-visible {
-  outline: 2px solid var(--github-button);
-  outline-offset: 2px;
-}
-
-/* ========== DISABLED STATES ========== */
-.disabled {
-  opacity: 0.5;
-  cursor: not-allowed;
-  pointer-events: none;
-}
-
-/* ========== FILE ICONS COLORS ========== */
-.file-icon-text {
-  color: #58a6ff;
-}
-
-.file-icon-image {
-  color: #3fb950;
-}
-
-.file-icon-pdf {
-  color: #f85149;
-}
-
-.file-icon-folder {
-  color: #d29922;
-}
-
-.file-icon-archive {
-  color: #bc8cff;
-}
-
-/* ========== CODE EDITOR ========== */
-.code-editor {
-  font-family: 'JetBrains Mono', 'Fira Code', monospace;
-  font-size: 14px;
-  line-height: 1.6;
-  tab-size: 2;
-}
-
-.code-editor:focus {
-  outline: none;
-}
-
-/* ========== LINE NUMBERS ========== */
-.line-numbers {
-  color: var(--github-secondary);
-  text-align: right;
-  padding-right: 1rem;
-  user-select: none;
-}
-
-/* ========== TOOLTIP ========== */
-.tooltip {
-  position: relative;
-}
-
-.tooltip:hover::before {
-  content: attr(data-tooltip);
-  position: absolute;
-  bottom: 100%;
-  left: 50%;
-  transform: translateX(-50%);
-  padding: 0.25rem 0.5rem;
-  background-color: var(--github-card);
-  border: 1px solid var(--github-border);
-  border-radius: 4px;
-  font-size: 0.75rem;
-  white-space: nowrap;
-  z-index: 100;
-  color: var(--github-text);
-}
-
-/* ========== DROPDOWN ========== */
-.dropdown-menu {
-  background-color: var(--github-card);
-  border: 1px solid var(--github-border);
-  border-radius: 8px;
-  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
-  padding: 0.5rem;
-  min-width: 160px;
-}
-
-.dropdown-item {
-  padding: 0.5rem 1rem;
-  border-radius: 4px;
-  cursor: pointer;
-  transition: all 0.2s ease;
-  color: var(--github-text);
-}
-
-.dropdown-item:hover {
-  background-color: var(--github-hover);
-}
-
-.dropdown-item-danger {
-  color: var(--github-danger);
-}
-
-.dropdown-item-danger:hover {
-  background-color: rgba(218, 54, 51, 0.15);
-}
-
-/* ========== MODAL ========== */
-.modal-overlay {
-  position: fixed;
-  inset: 0;
-  background-color: rgba(0, 0, 0, 0.7);
-  backdrop-filter: blur(4px);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  z-index: 1000;
-  animation: fadeIn 0.2s ease-out;
-}
-
-.modal-content {
-  background-color: var(--github-card);
-  border: 1px solid var(--github-border);
-  border-radius: 12px;
-  padding: 2rem;
-  max-width: 500px;
-  width: 90%;
-  max-height: 90vh;
-  overflow-y: auto;
-  animation: slideIn 0.3s ease-out;
-}
-
-/* ========== TABLE ========== */
-.github-table {
-  width: 100%;
-  border-collapse: collapse;
-}
-
-.github-table th {
-  text-align: left;
-  padding: 0.75rem 1rem;
-  border-bottom: 1px solid var(--github-border);
-  color: var(--github-secondary);
-  font-weight: 500;
-}
-
-.github-table td {
-  padding: 0.75rem 1rem;
-  border-bottom: 1px solid var(--github-border);
-}
-
-.github-table tr:hover {
-  background-color: var(--github-hover);
-}
-
-/* ========== RESPONSIVE GRID ========== */
-.grid-github {
-  display: grid;
-  gap: 1rem;
-}
-
-.grid-github-2 {
-  grid-template-columns: repeat(2, 1fr);
-}
-
-.grid-github-3 {
-  grid-template-columns: repeat(3, 1fr);
-}
-
-.grid-github-4 {
-  grid-template-columns: repeat(4, 1fr);
-}
-
-@media (max-width: 1024px) {
-  .grid-github-4 {
-    grid-template-columns: repeat(2, 1fr);
-  }
-}
-
-@media (max-width: 768px) {
-  .grid-github-2,
-  .grid-github-3,
-  .grid-github-4 {
-    grid-template-columns: 1fr;
-  }
-}
-
-/* ========== FLEX UTILITIES ========== */
-.flex-center {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.flex-between {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-}
-
-.flex-col {
-  display: flex;
-  flex-direction: column;
-}
-
-.gap-1 { gap: 0.25rem; }
-.gap-2 { gap: 0.5rem; }
-.gap-3 { gap: 0.75rem; }
-.gap-4 { gap: 1rem; }
-.gap-6 { gap: 1.5rem; }
-.gap-8 { gap: 2rem; }
-
-/* ========== TEXT UTILITIES ========== */
-.text-center { text-align: center; }
-.text-left { text-align: left; }
-.text-right { text-align: right; }
-
-.text-sm { font-size: 0.875rem; }
-.text-xs { font-size: 0.75rem; }
-.text-lg { font-size: 1.125rem; }
-.text-xl { font-size: 1.25rem; }
-.text-2xl { font-size: 1.5rem; }
-.text-3xl { font-size: 1.875rem; }
-
-.font-bold { font-weight: 700; }
-.font-semibold { font-weight: 600; }
-.font-medium { font-weight: 500; }
-.font-normal { font-weight: 400; }
-
-/* ========== GITHUB COLORS ========== */
-.text-github-bg { color: var(--github-bg); }
-.text-github-card { color: var(--github-card); }
-.text-github-border { color: var(--github-border); }
-.text-github-text { color: var(--github-text); }
-.text-github-secondary { color: var(--github-secondary); }
-.text-github-button { color: var(--github-button); }
-.text-github-success { color: var(--github-success); }
-.text-github-danger { color: var(--github-danger); }
-.text-github-warning { color: var(--github-warning); }
-
-/* ========== GITHUB BACKGROUNDS ========== */
-.bg-github-bg { background-color: var(--github-bg); }
-.bg-github-card { background-color: var(--github-card); }
-.bg-github-border { background-color: var(--github-border); }
-.bg-github-hover { background-color: var(--github-hover); }
-.bg-github-button { background-color: var(--github-button); }
-.bg-github-success { background-color: var(--github-success); }
-.bg-github-danger { background-color: var(--github-danger); }
-.bg-github-warning { background-color: var(--github-warning); }
-
-/* ========== BORDER UTILITIES ========== */
-.border-github { border: 1px solid var(--github-border); }
-.border-github-top { border-top: 1px solid var(--github-border); }
-.border-github-bottom { border-bottom: 1px solid var(--github-border); }
-.border-github-left { border-left: 1px solid var(--github-border); }
-.border-github-right { border-right: 1px solid var(--github-border); }
-
-.rounded-github { border-radius: 8px; }
-.rounded-github-sm { border-radius: 6px; }
-.rounded-github-lg { border-radius: 12px; }
-.rounded-github-full { border-radius: 9999px; }
-
-/* ========== SPACING ========== */
-.p-1 { padding: 0.25rem; }
-.p-2 { padding: 0.5rem; }
-.p-3 { padding: 0.75rem; }
-.p-4 { padding: 1rem; }
-.p-6 { padding: 1.5rem; }
-.p-8 { padding: 2rem; }
-
-.m-1 { margin: 0.25rem; }
-.m-2 { margin: 0.5rem; }
-.m-3 { margin: 0.75rem; }
-.m-4 { margin: 1rem; }
-.m-6 { margin: 1.5rem; }
-.m-8 { margin: 2rem; }
-
-/* ========== WIDTH & HEIGHT ========== */
-.w-full { width: 100%; }
-.h-full { height: 100%; }
-.min-h-screen { min-height: 100vh; }
-
-.max-w-md { max-width: 28rem; }
-.max-w-lg { max-width: 32rem; }
-.max-w-xl { max-width: 36rem; }
-.max-w-2xl { max-width: 42rem; }
-.max-w-4xl { max-width: 56rem; }
-.max-w-6xl { max-width: 72rem; }
-
-/* ========== OVERFLOW ========== */
-.overflow-auto { overflow: auto; }
-.overflow-hidden { overflow: hidden; }
-.overflow-y-auto { overflow-y: auto; }
-.overflow-x-auto { overflow-x: auto; }
-
-/* ========== POSITION ========== */
-.relative { position: relative; }
-.absolute { position: absolute; }
-.fixed { position: fixed; }
-.sticky { position: sticky; }
-
-/* ========== Z-INDEX ========== */
-.z-10 { z-index: 10; }
-.z-20 { z-index: 20; }
-.z-30 { z-index: 30; }
-.z-40 { z-index: 40; }
-.z-50 { z-index: 50; }
-
-/* ========== PRINT STYLES ========== */
-@media print {
-  .no-print {
-    display: none !important;
-  }
-  
-  body {
-    background: white !important;
-    color: black !important;
-  }
-}
-
-/* ========== MOBILE FIRST FIX ========== */
-@media (max-width: 640px) {
-  .text-sm {
-    font-size: 0.8rem;
-  }
-  .text-xs {
-    font-size: 0.7rem;
-  }
-  .p-4 {
-    padding: 0.75rem;
-  }
-  .p-6 {
-    padding: 1rem;
-  }
-  .gap-4 {
-    gap: 0.75rem;
   }
 }
