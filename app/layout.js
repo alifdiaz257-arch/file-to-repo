@@ -1,8 +1,12 @@
 import './globals.css'
 
 export const metadata = {
-  title: 'GitHub File Manager • Website Berhenti',
-  description: 'Pengembangan dihentikan sementara. Dev stress.',
+  title: 'GitHub File Manager • Permanently Discontinued',
+  description: 'Website telah berhenti permanen. Developer stres.',
+  robots: {
+    index: false,
+    follow: false,
+  },
 }
 
 export default function RootLayout({ children }) {
