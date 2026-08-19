@@ -6,7 +6,6 @@ import { useState } from 'react'
 import { FaGithub } from 'react-icons/fa'
 import { useSearchParams } from 'next/navigation'
 
-// Komponen yang menggunakan useSearchParams
 function SignInContent() {
   const [loading, setLoading] = useState(false)
   const searchParams = useSearchParams()
@@ -23,14 +22,14 @@ function SignInContent() {
   }
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-github-bg p-4">
-      <div className="bg-github-card border border-github-border rounded-lg p-8 max-w-md w-full fade-in">
+    <div className="min-h-screen flex items-center justify-center bg-[#0d1117] p-4">
+      <div className="bg-[#161b22] border border-[#30363d] rounded-lg p-8 max-w-md w-full">
         <div className="text-center mb-8">
-          <div className="w-20 h-20 mx-auto mb-4 bg-github-button rounded-full flex items-center justify-center">
+          <div className="w-20 h-20 mx-auto mb-4 bg-[#238636] rounded-full flex items-center justify-center">
             <FaGithub className="w-10 h-10 text-white" />
           </div>
           <h1 className="text-2xl font-bold text-white">Sign in</h1>
-          <p className="text-github-secondary mt-2">Manage your GitHub repositories</p>
+          <p className="text-[#8b949e] mt-2">Manage your GitHub repositories</p>
         </div>
 
         {error && (
@@ -46,17 +45,17 @@ function SignInContent() {
         <button
           onClick={handleSignIn}
           disabled={loading}
-          className="w-full flex items-center justify-center gap-3 px-4 py-3 bg-github-button hover:bg-github-buttonHover text-white rounded-lg transition disabled:opacity-50 disabled:cursor-not-allowed text-lg font-medium"
+          className="w-full flex items-center justify-center gap-3 px-4 py-3 bg-[#238636] hover:bg-[#2ea043] text-white rounded-lg transition disabled:opacity-50 disabled:cursor-not-allowed text-lg font-medium"
         >
           {loading ? (
-            <div className="w-6 h-6 border-2 border-white border-t-transparent rounded-full spin"></div>
+            <div className="w-6 h-6 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
           ) : (
             <FaGithub className="w-6 h-6" />
           )}
           {loading ? 'Signing in...' : 'Sign in with GitHub'}
         </button>
 
-        <div className="mt-6 text-center text-xs text-github-secondary border-t border-github-border pt-4">
+        <div className="mt-6 text-center text-xs text-[#8b949e] border-t border-[#30363d] pt-4">
           <p>By signing in, you agree to our Terms of Service</p>
         </div>
       </div>
@@ -64,12 +63,11 @@ function SignInContent() {
   )
 }
 
-// Main component dengan Suspense
 export default function SignIn() {
   return (
     <Suspense fallback={
-      <div className="min-h-screen flex items-center justify-center bg-github-bg">
-        <div className="text-github-secondary">Loading...</div>
+      <div className="min-h-screen flex items-center justify-center bg-[#0d1117]">
+        <div className="text-[#8b949e]">Loading...</div>
       </div>
     }>
       <SignInContent />
