@@ -2,15 +2,15 @@
 
 import Layout from '@/components/Layout'
 import { useSession } from 'next-auth/react'
-import { useState } from 'react'
+import { useState } from 'react'  // ← PASTI IMPORT!
 import { FaCheckCircle } from 'react-icons/fa'
 import { FileUpload } from '@/components/FileUpload'
 
 export default function Upload() {
   const { data: session } = useSession()
-  const [loading, setLoading] = useState(false)
-  const [error, setError] = useState(null)
-  const [success, setSuccess] = useState(false)
+  const [loading, setLoading] = useState(false)  // ← useState
+  const [error, setError] = useState(null)  // ← useState
+  const [success, setSuccess] = useState(false)  // ← useState
 
   const handleUpload = async (files, path) => {
     setLoading(true)
