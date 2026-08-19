@@ -1,18 +1,15 @@
-import { AuthProvider } from '@/components/AuthProvider'
 import './globals.css'
 
 export const metadata = {
-  title: 'GitHub File Manager',
-  description: 'Manage your GitHub repositories with ease',
+  title: 'GitHub File Manager • Website Berhenti',
+  description: 'Pengembangan dihentikan sementara. Dev stress.',
 }
 
 export default function RootLayout({ children }) {
   return (
-    <html lang="en" suppressHydrationWarning>
+    <html lang="id">
       <body>
-        <AuthProvider>
-          {children}
-        </AuthProvider>
+        {children}
       </body>
     </html>
   )
