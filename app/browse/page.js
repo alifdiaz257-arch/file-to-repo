@@ -1,22 +1,22 @@
-'use client'
+'use client'  // ← WAJIB ADA!
 
 import Layout from '@/components/Layout'
 import { useSession } from 'next-auth/react'
-import { useState, useEffect } from 'react'
+import { useState, useEffect } from 'react'  // ← PASTI IMPORT!
 import { FaArrowLeft, FaFolderOpen } from 'react-icons/fa'
 
 export default function Browse() {
   const { data: session } = useSession()
-  const [files, setFiles] = useState([])
-  const [loading, setLoading] = useState(false)
-  const [currentPath, setCurrentPath] = useState('')
-  const [pathHistory, setPathHistory] = useState([])
+  const [files, setFiles] = useState([])  // ← useState
+  const [loading, setLoading] = useState(false)  // ← useState
+  const [currentPath, setCurrentPath] = useState('')  // ← useState
+  const [pathHistory, setPathHistory] = useState([])  // ← useState
 
-  useEffect(() => {
+  useEffect(() => {  // ← useEffect
     if (session) {
       loadFiles('')
     }
-  }, [session])
+  }, [session])  // ← useEffect dependency
 
   const loadFiles = async (path) => {
     setLoading(true)
