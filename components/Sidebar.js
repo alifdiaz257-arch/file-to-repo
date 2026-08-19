@@ -11,13 +11,18 @@ import {
   FaSignInAlt,
   FaEdit,
   FaTimes,
-  FaHome
 } from 'react-icons/fa'
 import { MdDashboard } from 'react-icons/md'
+import { useEffect, useState } from 'react'
 
 export function Sidebar({ isOpen, isMobile, toggle, onItemClick }) {
   const { data: session } = useSession()
   const pathname = usePathname()
+  const [mounted, setMounted] = useState(false)
+
+  useEffect(() => {
+    setMounted(true)
+  }, [])
 
   const menuItems = [
     { href: '/', icon: <MdDashboard className="w-5 h-5" />, label: 'Dashboard' },
@@ -32,10 +37,11 @@ export function Sidebar({ isOpen, isMobile, toggle, onItemClick }) {
     }
   }
 
+  if (!mounted) return null
+
   const sidebarContent = (
     <div className="flex flex-col h-full">
-      {/* Header */}
-      <div className="p-4 border-b border-github-border flex items-center justify-between">
+      <div className="p-4 border-b border-[#30363d] flex items-center justify-between">
         <div className="flex items-center gap-3">
           <FaGithub className="w-8 h-8 text-white" />
           <span className="text-xl font-bold text-white">GitHub Manager</span>
@@ -43,14 +49,13 @@ export function Sidebar({ isOpen, isMobile, toggle, onItemClick }) {
         {isMobile && (
           <button
             onClick={toggle}
-            className="text-github-secondary hover:text-white transition"
+            className="text-[#8b949e] hover:text-white transition"
           >
             <FaTimes className="w-6 h-6" />
           </button>
         )}
       </div>
 
-      {/* Menu */}
       <nav className="flex-1 p-4 space-y-1 overflow-y-auto">
         {menuItems.map((item) => (
           <Link
@@ -59,8 +64,8 @@ export function Sidebar({ isOpen, isMobile, toggle, onItemClick }) {
             onClick={handleLinkClick}
             className={`flex items-center gap-3 p-3 rounded-lg transition ${
               pathname === item.href
-                ? 'bg-github-button text-white'
-                : 'text-github-secondary hover:bg-github-hover hover:text-white'
+                ? 'bg-[#238636] text-white'
+                : 'text-[#8b949e] hover:bg-[#1f2937] hover:text-white'
             }`}
           >
             {item.icon}
@@ -69,28 +74,27 @@ export function Sidebar({ isOpen, isMobile, toggle, onItemClick }) {
         ))}
       </nav>
 
-      {/* Footer */}
-      <div className="p-4 border-t border-github-border">
+      <div className="p-4 border-t border-[#30363d]">
         {session ? (
           <div className="space-y-3">
             <div className="flex items-center gap-3">
               <img
                 src={session.user.image}
                 alt={session.user.name}
-                className="w-8 h-8 rounded-full border border-github-border"
+                className="w-8 h-8 rounded-full border border-[#30363d]"
               />
               <div className="flex-1 min-w-0">
                 <p className="text-sm font-medium text-white truncate">
                   {session.user.name}
                 </p>
-                <p className="text-xs text-github-secondary truncate">
+                <p className="text-xs text-[#8b949e] truncate">
                   {session.user.email}
                 </p>
               </div>
             </div>
             <button
               onClick={() => signOut()}
-              className="flex items-center gap-2 w-full p-2 rounded-lg hover:bg-github-hover text-github-secondary hover:text-white transition"
+              className="flex items-center gap-2 w-full p-2 rounded-lg hover:bg-[#1f2937] text-[#8b949e] hover:text-white transition"
             >
               <FaSignOutAlt className="w-4 h-4" />
               <span>Sign Out</span>
@@ -99,7 +103,7 @@ export function Sidebar({ isOpen, isMobile, toggle, onItemClick }) {
         ) : (
           <button
             onClick={() => signIn('github')}
-            className="flex items-center justify-center gap-2 w-full p-2 bg-github-button hover:bg-github-buttonHover text-white rounded-lg transition"
+            className="flex items-center justify-center gap-2 w-full p-2 bg-[#238636] hover:bg-[#2ea043] text-white rounded-lg transition"
           >
             <FaSignInAlt className="w-4 h-4" />
             <span>Sign In</span>
@@ -109,22 +113,20 @@ export function Sidebar({ isOpen, isMobile, toggle, onItemClick }) {
     </div>
   )
 
-  // Desktop
   if (!isMobile) {
     return (
-      <aside className="w-64 bg-github-card border-r border-github-border flex-shrink-0 h-screen sticky top-0 overflow-y-auto">
+      <aside className="w-64 bg-[#161b22] border-r border-[#30363d] flex-shrink-0 h-screen sticky top-0 overflow-y-auto">
         {sidebarContent}
       </aside>
     )
   }
 
-  // Mobile
   return (
     <>
       {isOpen && (
         <div className="fixed inset-0 z-50">
           <div className="absolute inset-0 bg-black/60" onClick={toggle} />
-          <div className="absolute top-0 left-0 w-80 h-full bg-github-card shadow-2xl sidebar-enter">
+          <div className="absolute top-0 left-0 w-80 h-full bg-[#161b22] shadow-2xl sidebar-enter">
             {sidebarContent}
           </div>
         </div>
