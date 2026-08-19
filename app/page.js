@@ -1,27 +1,29 @@
 'use client'
 
-import { FaGithub, FaExclamationTriangle, FaClock, FaUser, FaArrowRight, FaCode, FaServer, FaDatabase, FaTools } from 'react-icons/fa'
+import { FaGithub, FaExclamationTriangle, FaClock, FaUser, FaArrowRight, FaCode, FaTools } from 'react-icons/fa'
 import { HiOutlineExternalLink } from 'react-icons/hi'
 import { MdSecurity } from 'react-icons/md'
 
 export default function Home() {
   return (
-    <div className="min-h-screen bg-gradient-to-b from-[#0d1117] via-[#161b22] to-[#0d1117] text-[#c9d1d9] flex items-center justify-center p-4 md:p-8">
+    <div className="min-h-screen bg-[#0d1117] text-[#c9d1d9] flex items-center justify-center p-4 md:p-8">
       <div className="max-w-4xl w-full">
-        {/* Main Card - No Outline */}
-        <div className="bg-[#161b22]/50 backdrop-blur-sm rounded-2xl p-8 md:p-12 shadow-2xl shadow-[#000000]/50">
+        {/* Main Card */}
+        <div className="bg-[#161b22] rounded-2xl p-8 md:p-12 shadow-2xl shadow-[#000000]/50 border border-[#30363d]/30">
           
-          {/* Status Badge - No Outline */}
+          {/* Status Badge */}
           <div className="flex items-center gap-3 mb-8 pb-4 border-b border-[#30363d]/50">
             <div className="flex items-center gap-2">
               <span className="w-2 h-2 rounded-full bg-[#da3633] animate-pulse"></span>
-              <span className="text-xs font-mono text-[#da3633] font-semibold tracking-[0.2em] uppercase">Permanently Discontinued</span>
+              <span className="text-xs font-mono text-[#da3633] font-semibold tracking-[0.2em] uppercase">
+                Permanently Discontinued
+              </span>
             </div>
             <span className="text-xs text-[#8b949e]/50">|</span>
             <span className="text-xs text-[#8b949e]/50">v1.0.0</span>
           </div>
 
-          {/* Icon Area */}
+          {/* Icon */}
           <div className="w-24 h-24 mb-8 rounded-full bg-[#da3633]/5 flex items-center justify-center">
             <FaExclamationTriangle className="w-11 h-11 text-[#da3633] opacity-80" />
           </div>
@@ -36,10 +38,10 @@ export default function Home() {
             Pengembangan dihentikan secara permanen karena faktor teknis dan non-teknis yang tidak memungkinkan untuk dilanjutkan.
           </p>
 
-          {/* Detail Box - No Outline */}
-          <div className="bg-[#0d1117]/80 rounded-xl p-6 mb-8 space-y-4">
+          {/* Detail Box */}
+          <div className="bg-[#0d1117] rounded-xl p-6 mb-8 space-y-4">
             
-            {/* Alasan Utama */}
+            {/* Alasan */}
             <div className="flex items-start gap-4">
               <FaClock className="w-5 h-5 text-[#da3633] mt-0.5 flex-shrink-0" />
               <div>
@@ -69,7 +71,7 @@ export default function Home() {
               </div>
             </div>
 
-            {/* Alasan Detail */}
+            {/* Kendala */}
             <div className="flex items-start gap-4">
               <FaTools className="w-5 h-5 text-[#8b949e] mt-0.5 flex-shrink-0" />
               <div>
