@@ -1,52 +1,106 @@
 import { Octokit } from '@octokit/rest'
 import { getServerSession } from 'next-auth'
 import { authOptions } from '../../auth/[...nextauth]/route'
-import formidable from 'formidable'
-import fs from 'fs'
 
-export const config = {
-  api: {
-    bodyParser: false,
-  },
-}
+// ✅ Konfigurasi untuk Next.js 14 App Router
+export const runtime = 'nodejs'
+export const dynamic = 'force-dynamic'
 
 export async function POST(req) {
-  const session = await getServerSession(authOptions)
-  if (!session) {
-    return new Response(JSON.stringify({ error: 'Unauthorized' }), { status: 401 })
-  }
+  try {
+    // 1. Cek session
+    const session = await getServerSession(authOptions)
+    if (!session) {
+      return new Response(
+        JSON.stringify({ error: 'Unauthorized - Please sign in' }),
+        { status: 401 }
+      )
+    }
 
-  const form = new formidable.IncomingForm()
-  
-  return new Promise((resolve, reject) => {
-    form.parse(req, async (err, fields, files) => {
-      if (err) {
-        resolve(new Response(JSON.stringify({ error: err.message }), { status: 500 }))
-        return
-      }
+    // 2. Parse FormData
+    const formData = await req.formData()
+    const files = formData.getAll('files')
+    const uploadPath = formData.get('path') || ''
 
-      const octokit = new Octokit({ auth: session.accessToken })
-      const uploadPath = fields.path || ''
-      const fileArray = Array.isArray(files.files) ? files.files : [files.files]
+    // 3. Validasi
+    if (!files || files.length === 0) {
+      return new Response(
+        JSON.stringify({ error: 'No files provided' }),
+        { status: 400 }
+      )
+    }
+
+    // 4. Upload ke GitHub
+    const octokit = new Octokit({ auth: session.accessToken })
+    const results = []
+
+    for (const file of files) {
+      // Baca file
+      const buffer = Buffer.from(await file.arrayBuffer())
+      const content = buffer.toString('base64')
+      
+      // Tentukan path
+      const path = uploadPath ? `${uploadPath}/${file.name}` : file.name
 
       try {
-        for (const file of fileArray) {
-          const content = fs.readFileSync(file.filepath, 'base64')
-          const path = uploadPath ? `${uploadPath}/${file.originalFilename}` : file.originalFilename
-
-          await octokit.repos.createOrUpdateFileContents({
+        // Cek apakah file sudah ada
+        let sha
+        try {
+          const { data } = await octokit.repos.getContent({
             owner: process.env.GITHUB_OWNER,
             repo: process.env.GITHUB_REPO,
             path: path,
-            message: `Upload ${file.originalFilename}`,
-            content: content,
           })
+          sha = data.sha
+        } catch (err) {
+          // File belum ada, lanjutkan
         }
 
-        resolve(new Response(JSON.stringify({ message: 'Files uploaded successfully' }), { status: 200 }))
+        // Upload/Update file
+        const result = await octokit.repos.createOrUpdateFileContents({
+          owner: process.env.GITHUB_OWNER,
+          repo: process.env.GITHUB_REPO,
+          path: path,
+          message: sha ? `Update ${file.name}` : `Upload ${file.name}`,
+          content: content,
+          sha: sha,
+        })
+
+        results.push({
+          name: file.name,
+          path: path,
+          success: true,
+          sha: result.data.content.sha,
+        })
       } catch (error) {
-        resolve(new Response(JSON.stringify({ error: error.message }), { status: 500 }))
+        results.push({
+          name: file.name,
+          path: path,
+          success: false,
+          error: error.message,
+        })
       }
-    })
-  })
+    }
+
+    // 5. Return response
+    const successCount = results.filter(r => r.success).length
+    const failCount = results.filter(r => !r.success).length
+
+    return new Response(
+      JSON.stringify({
+        message: `${successCount} file(s) uploaded successfully${failCount > 0 ? `, ${failCount} failed` : ''}`,
+        results: results,
+      }),
+      { status: 200 }
+    )
+
+  } catch (error) {
+    console.error('Upload error:', error)
+    return new Response(
+      JSON.stringify({ 
+        error: error.message || 'Internal server error' 
+      }),
+      { status: 500 }
+    )
+  }
 }
