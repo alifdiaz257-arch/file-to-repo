@@ -2,15 +2,20 @@
 
 import { Suspense } from 'react'
 import { signIn } from 'next-auth/react'
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { FaGithub } from 'react-icons/fa'
 import { useSearchParams } from 'next/navigation'
 
 function SignInContent() {
   const [loading, setLoading] = useState(false)
+  const [mounted, setMounted] = useState(false)
   const searchParams = useSearchParams()
-  const error = searchParams.get('error')
-  const callbackUrl = searchParams.get('callbackUrl') || '/'
+  const error = searchParams?.get('error')
+  const callbackUrl = searchParams?.get('callbackUrl') || '/'
+
+  useEffect(() => {
+    setMounted(true)
+  }, [])
 
   const handleSignIn = async () => {
     setLoading(true)
@@ -19,6 +24,14 @@ function SignInContent() {
     } finally {
       setLoading(false)
     }
+  }
+
+  if (!mounted) {
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-[#0d1117]">
+        <div className="text-[#8b949e]">Loading...</div>
+      </div>
+    )
   }
 
   return (
